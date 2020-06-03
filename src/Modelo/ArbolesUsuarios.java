@@ -71,14 +71,16 @@ public class ArbolesUsuarios {
         ArbolB<Contacto> arbol = null;
         try {
             String ruta = ArbolesUsuarios.getRutaArbol(c.getCorreo());
+            System.out.println("Ruta del arbol: " + ruta + "\\" + c.getCorreo() + ".txt");
             ObjectInputStream leyendoFichero = new ObjectInputStream(
-                    new FileInputStream(ruta + "/" + c.getCorreo() + ".txt"));
+                    new FileInputStream(ruta + "\\" + c.getCorreo() + ".txt"));
             arbol = (ArbolB) leyendoFichero.readObject();
             leyendoFichero.close();
-        } catch (IOException ex) {
-            System.out.println("Error io cargar arbol");
-        } catch (ClassNotFoundException ex) {
+        }catch (ClassNotFoundException ex) {
             System.out.println("Error class not found");
+        } catch (IOException ex) {
+            System.out.println("Error io al cargar el arbol");
+            Logger.getLogger(ArbolesUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arbol;
     }
