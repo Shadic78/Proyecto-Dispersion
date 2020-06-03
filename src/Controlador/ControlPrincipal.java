@@ -8,6 +8,7 @@ package Controlador;
 import Modelo.Contacto;
 import Modelo.ModeloTablaContactos;
 import Modelo.SesionActual;
+import Modelo.UsuariosRegistrados;
 import Vista.BuscarContacto;
 import Vista.ListarContactos;
 import Vista.Principal;
@@ -26,6 +27,7 @@ public class ControlPrincipal {
         this.form = form;
         this.form.getBtnBuscarContactos().addActionListener(this::buscarContactos);
         this.form.getBtnListarMisContactos().addActionListener(this::listarMisContactos);
+        this.form.getBtnListarTodos().addActionListener(this::listarTodos);
         this.modeloTablas = new ModeloTablaContactos();
         mostrarDatosUsuario();
     }
@@ -48,12 +50,20 @@ public class ControlPrincipal {
     
     private void listarMisContactos(ActionEvent e) {
         ArrayList<Contacto> contactos = SesionActual.listarMisContactos();
-        
+        crearTabla(contactos, "Mis contactos");
+    }
+    
+    private void listarTodos(ActionEvent e) {
+        ArrayList<Contacto> contactos = UsuariosRegistrados.getTodosLosUsuarios();
+        crearTabla(contactos, "Todos los usuarios registrados");
+    }
+    
+    private void crearTabla(ArrayList<Contacto> contactos, String titulo) {
         ListarContactos formTabla = new ListarContactos();
-        ControlListarContactos con = new ControlListarContactos(formTabla, "Mis contactos");
+        ControlListarContactos con = new ControlListarContactos(formTabla, titulo);
         
         modeloTablas.rellenarTabla(formTabla.getTableContactos(), contactos);
-        formTabla.setVisible(true);
+        formTabla.setVisible(true);        
     }
     
 }

@@ -11,7 +11,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -69,6 +72,18 @@ public class UsuariosRegistrados {
             System.out.println("Error al guardar la tabla");
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public static ArrayList<Contacto> getTodosLosUsuarios() {
+        ArrayList<Contacto> listaUsuarios = new ArrayList<>();
+        Hashtable<String, Contacto> tabla = UsuariosRegistrados.getTablaGuardada();
+        Collection<Contacto> col = tabla.values();
+        Iterator<Contacto> itr = col.iterator();
+        
+        while(itr.hasNext()) {
+            listaUsuarios.add(itr.next());
+        }
+        return listaUsuarios;
     }
     
 }

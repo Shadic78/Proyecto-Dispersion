@@ -40,7 +40,7 @@ public class Principal extends javax.swing.JFrame {
         LbEdad = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        BtnListarTodos = new javax.swing.JMenuItem();
         BtnListarMisContactos = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         BtnBuscarContactos = new javax.swing.JMenuItem();
@@ -69,8 +69,8 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu1.setText("Archivo");
 
-        jMenuItem1.setText("Listar todos");
-        jMenu1.add(jMenuItem1);
+        BtnListarTodos.setText("Listar todos");
+        jMenu1.add(BtnListarTodos);
 
         BtnListarMisContactos.setText("Listar mis contactos");
         jMenu1.add(BtnListarMisContactos);
@@ -131,13 +131,13 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(LbNombre))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(LbCorreo))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LbCorreo)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(LbEdad))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LbEdad)
+                    .addComponent(jLabel4))
                 .addContainerGap(94, Short.MAX_VALUE))
         );
 
@@ -164,9 +164,14 @@ public class Principal extends javax.swing.JFrame {
         return BtnListarMisContactos;
     }
 
+    public JMenuItem getBtnListarTodos() {
+        return BtnListarTodos;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem BtnBuscarContactos;
     private javax.swing.JMenuItem BtnListarMisContactos;
+    private javax.swing.JMenuItem BtnListarTodos;
     private javax.swing.JLabel LbCorreo;
     private javax.swing.JLabel LbEdad;
     private javax.swing.JLabel LbNombre;
@@ -178,7 +183,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     // End of variables declaration//GEN-END:variables
