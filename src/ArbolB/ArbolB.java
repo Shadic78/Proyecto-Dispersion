@@ -3,6 +3,7 @@ package ArbolB;
 import Excepciones.ItemNotFoundException;
 import Interfaces.Arbol;
 import Interfaces.Nodo;
+import Modelo.Contacto;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -36,35 +37,36 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
         this.maxChildrenSize = order;
     }
 
-    public void r() {
+    public void getElementos(ArrayList<Contacto> lista) {
         if(root != null) {
-            recorrerArbol(root);            
+            recorrerArbol(root, lista);            
         }
         else {
             System.out.println("La raiz es null, size: " + size);
         }
     }
 
-    public void recorrerArbol(NodoB<T> node) {
+    public void recorrerArbol(NodoB<T> node, ArrayList<Contacto> lista) {
         int x = 0;
-
         for (int i = 0; i < node.numberOfChildren(); i++) {
             if (node.getChild(i) != null) {
-                recorrerArbol(node.getChild(i));
+                recorrerArbol(node.getChild(i), lista);
             }
             if (x <= node.numberOfKeys() && node.getKey(x) != null) {
-                System.out.println(node.getKey(x++));
+                lista.add((Contacto) node.getKey(x++).getElemento());
+                System.out.println(node.getKey(x));
             }
         }
         if (isShet(node)) {
             for (int i = 0; i < node.numberOfKeys(); i++) {
+                lista.add((Contacto) node.getKey(i).getElemento());
                 System.out.println(node.getKey(i));
             }
         }
 
     }
 
-    private void recorrerArbol(NodoB<T> node, ArrayList<Integer> indices) {
+    /*private void recorrerArbol(NodoB<T> node, ArrayList<Integer> indices) {
         int x = 0;
 
         for (int i = 0; i < node.numberOfChildren(); i++) {
@@ -90,7 +92,7 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
             }
         }
 
-    }
+    }*/   
 
     private boolean isShet(NodoB<T> n) {
         return n.numberOfChildren() == 0;
@@ -644,10 +646,6 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
             }
         }
         throw new ItemNotFoundException("Elemento no encontrado");
-    }
-
-    public void recorrerArbol() {
-        r();
     }
 
     public void recorrerArbolElementos(NodoB<T> node, ArrayList<T> elementos) {

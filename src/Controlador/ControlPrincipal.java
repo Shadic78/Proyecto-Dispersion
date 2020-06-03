@@ -5,10 +5,14 @@
  */
 package Controlador;
 
+import Modelo.Contacto;
+import Modelo.ModeloTablaContactos;
 import Modelo.SesionActual;
 import Vista.BuscarContacto;
+import Vista.ListarContactos;
 import Vista.Principal;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,11 +20,13 @@ import java.awt.event.ActionEvent;
  */
 public class ControlPrincipal {
     private Principal form;
+    private ModeloTablaContactos modeloTablas;
 
     public ControlPrincipal(Principal form) {
         this.form = form;
         this.form.getBtnBuscarContactos().addActionListener(this::buscarContactos);
         this.form.getBtnListarMisContactos().addActionListener(this::listarMisContactos);
+        this.modeloTablas = new ModeloTablaContactos();
         mostrarDatosUsuario();
     }
     
@@ -41,7 +47,13 @@ public class ControlPrincipal {
     }
     
     private void listarMisContactos(ActionEvent e) {
-        SesionActual.listarMisContactos();
+        ArrayList<Contacto> contactos = SesionActual.listarMisContactos();
+        
+        ListarContactos formTabla = new ListarContactos();
+        ControlListarContactos con = new ControlListarContactos(formTabla, "Mis contactos");
+        
+        modeloTablas.rellenarTabla(formTabla.getTableContactos(), contactos);
+        formTabla.setVisible(true);
     }
     
 }

@@ -6,6 +6,7 @@
 package Modelo;
 
 import ArbolB.ArbolB;
+import java.util.ArrayList;
 
 /**
  *
@@ -27,11 +28,14 @@ public class SesionActual {
         ArbolesUsuarios.guardarArbol(arbol, rutaArbolB, usuario.getCorreo());
     }
     
-    public static void listarMisContactos() {
-        System.out.println("Recorrer arbol: ");
-        arbol.r();
+    public static ArrayList<Contacto> listarMisContactos() {
+        ArrayList<Contacto> misContactos = new ArrayList<>();
+        arbol.getElementos(misContactos);
+        System.out.println("Array de contactos: ");
+        System.out.println(misContactos);
         System.out.println("\nTo string: ");
         System.out.println(arbol.toString());
+        return misContactos;
     }
     
     public static String getNombre() {
