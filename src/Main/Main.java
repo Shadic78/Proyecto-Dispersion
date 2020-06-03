@@ -24,20 +24,9 @@ public class Main {
 
     public static void main(String[] args) {
         //generarTablas();
-        //Login login = new Login();
-        //ControlLogin controlLogin = new ControlLogin(login);        
-        //login.setVisible(true);
-        
-        try {
-            NodoB<String> n = new NodoB<>(null,  3, 3);
-            ObjectOutputStream escribiendoFichero = new ObjectOutputStream(
-                    new FileOutputStream("Datos/prueba.txt"));
-            escribiendoFichero.writeObject(n);
-            escribiendoFichero.close();
-        } catch (IOException ex) {
-            System.out.println("Error al guardar el nodo");
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        Login login = new Login();
+        ControlLogin controlLogin = new ControlLogin(login);        
+        login.setVisible(true);
     }
     
     public static void generarTablas() {

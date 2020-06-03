@@ -20,6 +20,7 @@ public class NodoB<T extends Comparable<T>> implements Serializable {
     private NodoB<T>[] children = null;
     private int childrenSize = 0;
     private int keysSize = 0;    
+    private Comparator comparator = new ComparatorNodos();
     /*private Comparator<NodoB<T>> comparator = new Comparator<NodoB<T>>() {
         @Override
         public int compare(NodoB<T> arg0, NodoB<T> arg1) {
@@ -49,10 +50,6 @@ public class NodoB<T extends Comparable<T>> implements Serializable {
         this.childrenSize = childrenSize;
     }
 
-    public void setComparator(Comparator<NodoB<T>> comparator) {
-       // this.comparator = comparator;
-    }
-
     public void setParent(NodoB<T> parent) {
         this.parent = parent;
     }
@@ -72,10 +69,6 @@ public class NodoB<T extends Comparable<T>> implements Serializable {
     public int getChildrenSize() {
         return childrenSize;
     }
-
-    /*public Comparator<NodoB<T>> getComparator() {
-        return comparator;
-    }*/
 
     public int getIndiceLlave() {
         return indiceLlave;
@@ -172,7 +165,7 @@ public class NodoB<T extends Comparable<T>> implements Serializable {
     public boolean addChild(NodoB<T> child) {
         child.parent = this;
         children[childrenSize++] = child;
-        //Arrays.sort(children, 0, childrenSize, comparator);
+        Arrays.sort(children, 0, childrenSize, comparator);
         return true;
     }
 

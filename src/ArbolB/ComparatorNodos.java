@@ -5,10 +5,19 @@
  */
 package ArbolB;
 
+import Modelo.Contacto;
+import java.io.Serializable;
+import java.util.Comparator;
+
 /**
  *
  * @author Equipo1
  */
-public class ComparatorNodos {
-    
+public class ComparatorNodos implements Comparator<NodoB<Contacto>>, Serializable {
+
+    @Override
+    public int compare(NodoB<Contacto> o1, NodoB<Contacto> o2) {
+        return o1.getKey(0).getElemento().compareTo(o2.getKey(0).getElemento());
+    }
+
 }
