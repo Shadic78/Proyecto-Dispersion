@@ -5,6 +5,7 @@
  */
 package Controlador;
 
+import Modelo.SesionActual;
 import Vista.Principal;
 
 /**
@@ -16,6 +17,17 @@ public class ControlPrincipal {
 
     public ControlPrincipal(Principal form) {
         this.form = form;
+        mostrarDatosUsuario();
+    }
+    
+    private void mostrarDatosUsuario() {
+        String nombre = SesionActual.getNombre();
+        String correo = SesionActual.getCorreo();
+        int edad = SesionActual.getEdad();
+        
+        form.getLbNombre().setText(nombre);
+        form.getLbCorreo().setText(correo);
+        form.getLbEdad().setText(Integer.toString(edad));
     }
     
 }

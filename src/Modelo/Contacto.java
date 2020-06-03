@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Equipo1
  */
-public class Contacto implements Serializable {
+public class Contacto implements Comparable<Contacto>, Serializable {
     private String nombre;
     private int edad;
     private String correo;
@@ -59,6 +59,11 @@ public class Contacto implements Serializable {
     @Override
     public String toString() {
         return "Contacto{" + "nombre=" + nombre + ", edad=" + edad + ", correo=" + correo + ", password=" + password + '}';
+    }
+
+    @Override
+    public int compareTo(Contacto o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

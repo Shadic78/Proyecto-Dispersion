@@ -8,6 +8,7 @@ package Controlador;
 import Modelo.ArbolesUsuarios;
 import Modelo.Contacto;
 import Modelo.UsuariosRegistrados;
+import Vista.Login;
 import Vista.SeleccionRuta;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -36,10 +37,16 @@ public class ControlSeleccionarRuta {
     
     public void aceptar(ActionEvent e) {
         String ruta = rutaForm.getTxtRuta().getText();
+        
         UsuariosRegistrados.registrarYGuardar(usuarioNuevo.getCorreo(), usuarioNuevo);  
         ArbolesUsuarios.registroNuevo(usuarioNuevo.getCorreo(), ruta);
         
-        JOptionPane.showMessageDialog(null, "Registro exitoso");      
+        JOptionPane.showMessageDialog(null, "Registro exitoso");  
+        
+        Login log = new Login();
+        ControlLogin c = new ControlLogin(log);
+        log.setVisible(true);
+        rutaForm.dispose();
     }
     
     public File selectFile(int tipo) {

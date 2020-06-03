@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class Key<T extends Comparable<T>> implements Comparable<Key<T>> {
 
     private T elemento;
-    private ArrayList<Integer> indecesEgresados = new ArrayList<>();
 
     public Key(T elemento) {
         this.elemento = elemento;
@@ -21,16 +20,8 @@ public class Key<T extends Comparable<T>> implements Comparable<Key<T>> {
         return elemento;
     }
 
-    public ArrayList<Integer> getIndiceEgresados() {
-        return indecesEgresados;
-    }
-
     public void setElemento(T elemento) {
         this.elemento = elemento;
-    }
-
-    public void setIndecesEgresados(ArrayList<Integer> indecesEgresados) {
-        this.indecesEgresados = indecesEgresados;
     }
 
     @Override
@@ -40,7 +31,7 @@ public class Key<T extends Comparable<T>> implements Comparable<Key<T>> {
 
     @Override
     public String toString() {
-        return "elemento = " + elemento + " --indecesEgresados=" + indecesEgresados;
+        return "elemento = " + elemento;
     }
 
 }

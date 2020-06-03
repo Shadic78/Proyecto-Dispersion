@@ -13,6 +13,4 @@ import java.util.ArrayList;
  */
 public interface Nodo<T extends Comparable<T>> {
     
-    public ArrayList<Integer> getIndices();
-    
 }

@@ -6,6 +6,7 @@
 package Modelo;
 
 import ArbolB.ArbolB;
+import Interfaces.Arbol;
 import Main.Main;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,9 +26,14 @@ public class ArbolesUsuarios {
     private ArbolesUsuarios(){}
 
     public static void registroNuevo(String correo, String ruta) {
+        // Guardar la ruta en la tabla de rutas
         Hashtable<String, String> tabla = ArbolesUsuarios.getTablaGuardada();
         tabla.put(correo, ruta);
         ArbolesUsuarios.guardarTabla(tabla);
+        
+        // Crear y guardar el arbol del usuario
+        ArbolB<Contacto> arbol = new ArbolB<Contacto>(3);
+        ArbolesUsuarios.guardarArbol(arbol, ruta, correo);
     }
 
     public static Hashtable<String, String> getTablaGuardada() {
@@ -59,6 +65,34 @@ public class ArbolesUsuarios {
     
     public static String getRutaArbol(String correo) {
         return ArbolesUsuarios.getTablaGuardada().get(correo);
+    }
+    
+    public static ArbolB<Contacto> cargarArbol(Contacto c) {
+        ArbolB<Contacto> arbol = null;
+        try {
+            String ruta = ArbolesUsuarios.getRutaArbol(c.getCorreo());
+            ObjectInputStream leyendoFichero = new ObjectInputStream(
+                    new FileInputStream(ruta + "/" + c.getCorreo() + ".txt"));
+            arbol = (ArbolB) leyendoFichero.readObject();
+            leyendoFichero.close();
+        } catch (IOException ex) {
+            System.out.println("Error io");
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Error class not found");
+        }
+        return arbol;
+    }
+    
+    public static void guardarArbol(ArbolB<Contacto> arbol, String ruta, String correo) {
+        try {
+            ObjectOutputStream escribiendoFichero = new ObjectOutputStream(
+                    new FileOutputStream(ruta + "/" + correo + ".txt"));
+            escribiendoFichero.writeObject(arbol);
+            escribiendoFichero.close();
+        } catch (IOException ex) {
+            System.out.println("Error al guardar el arbol");
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }        
     }
     
 }

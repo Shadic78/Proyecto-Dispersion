@@ -24,9 +24,12 @@ public class UsuariosRegistrados {
     private UsuariosRegistrados(){}
     
     public static void registrarYGuardar(String key, Contacto value) {
+        // Guardar el contacto en la tabla y guardarla
         Hashtable<String, Contacto> tabla = UsuariosRegistrados.getTablaGuardada();     
         tabla.put(key, value);
         UsuariosRegistrados.guardarTabla(tabla);
+        
+        // Crear y guardar su arbol
     }
     
     public static boolean comprobarRegistro(String key) {

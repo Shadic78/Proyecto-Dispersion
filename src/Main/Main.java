@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 public class Main {
 
     public static void main(String[] args) {
-        generarTablas();
+        //generarTablas();
         Login login = new Login();
         ControlLogin controlLogin = new ControlLogin(login);        
         login.setVisible(true);

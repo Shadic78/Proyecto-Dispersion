@@ -57,6 +57,7 @@ public class ControlRegistro {
     private void solicitarRuta(Contacto usuario) {
         SeleccionRuta seleccion = new SeleccionRuta();
         ControlSeleccionarRuta controlRuta = new ControlSeleccionarRuta(seleccion, usuario);
+        seleccion.setVisible(true);
     }
     
 }

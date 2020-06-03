@@ -14,7 +14,7 @@ import java.util.Comparator;
  *
  * @author Equipo1
  */
-public class NodoB<T extends Comparable<T>> implements Nodo<T> {
+public class NodoB<T extends Comparable<T>> {
 
     private int indiceLlave = 0;
     private Key<T>[] keys = null;
@@ -252,8 +252,4 @@ public class NodoB<T extends Comparable<T>> implements Nodo<T> {
         return builder.toString();
     }
 
-    @Override
-    public ArrayList<Integer> getIndices() {
-        return keys[indiceLlave].getIndiceEgresados();
-    }
 }

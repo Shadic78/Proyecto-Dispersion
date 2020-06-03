@@ -5,15 +5,17 @@
  */
 package Interfaces;
 
+import ArbolB.NodoB;
+
 /**
  *
  * @author Equipo1
  */
 public interface Arbol <T extends Comparable<T>> {
 
-    public void insertar(T elemento, int indice);
+    public void insertar(T elemento);
     
-    public Nodo <T> buscar(T elemento);
+    public NodoB <T> buscar(T elemento);
     
     public void inOrden();
     

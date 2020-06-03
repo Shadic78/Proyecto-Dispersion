@@ -3,10 +3,11 @@ package ArbolB;
 import Excepciones.ItemNotFoundException;
 import Interfaces.Arbol;
 import Interfaces.Nodo;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class ArbolB<T extends Comparable<T>> implements Arbol<T> {
+public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
 
     // Default to 2-3 Tree
     private int minKeySize = 1;
@@ -67,9 +68,9 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T> {
             }
             if (x <= node.numberOfKeys() && node.getKey(x) != null) {
                 Key<T> actKey = node.getKey(x++);
-                for (int j = 0; j < actKey.getIndiceEgresados().size(); j++) {
-                    indices.add(actKey.getIndiceEgresados().get(j));
-                }
+               // for (int j = 0; j < actKey.getIndiceEgresados().size(); j++) {
+               //     indices.add(actKey.getIndiceEgresados().get(j));
+                //}
                 System.out.println(actKey);
             }
         }
@@ -77,9 +78,9 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T> {
 
             for (int i = 0; i < node.numberOfKeys(); i++) {
                 Key<T> actKey = node.getKey(i);
-                for (int j = 0; j < actKey.getIndiceEgresados().size(); j++) {
-                    indices.add(actKey.getIndiceEgresados().get(j));
-                }
+               // for (int j = 0; j < actKey.getIndiceEgresados().size(); j++) {
+               //     indices.add(actKey.getIndiceEgresados().get(j));
+                //}
                 System.out.println(actKey);
             }
         }
@@ -95,11 +96,11 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T> {
      * {@inheritDoc}
      */
     @Override
-    public void insertar(T elemento, int indice) {
+    public void insertar(T elemento) {
         if (root == null) {
             root = new NodoB<T>(null, maxKeySize, maxChildrenSize);
             Key<T> key = new Key<>(elemento);
-            key.getIndiceEgresados().add(indice);
+            //key.getIndiceEgresados().add(indice);
             root.addKey(key);
         } else {
             NodoB<T> node = root;
@@ -108,7 +109,7 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T> {
                 boolean repitKey = false;
                 for (int i = 0; i < node.numberOfKeys(); i++) {
                     if (node.getKey(i).getElemento().compareTo(elemento) == 0) {
-                        node.getKey(i).getIndiceEgresados().add(indice);
+                        //node.getKey(i).getIndiceEgresados().add(indice);
                         repitKey = true;
                         break;
                     }
@@ -118,7 +119,7 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T> {
                 }
                 if (node.numberOfChildren() == 0) {
                     Key<T> key = new Key<>(elemento);
-                    key.getIndiceEgresados().add(indice);
+                    //key.getIndiceEgresados().add(indice);
                     node.addKey(key);
                     if (node.numberOfKeys() <= maxKeySize) {
                         // A-OK
@@ -626,7 +627,7 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T> {
     }
 
     @Override
-    public Nodo buscar(T elemento) throws ItemNotFoundException {
+    public NodoB<T> buscar(T elemento) throws ItemNotFoundException {
         NodoB<T> nodo = getNode(elemento);
         if (nodo == null) {
             throw new ItemNotFoundException("Elemento no encontrado");
