@@ -6,7 +6,9 @@
 package Controlador;
 
 import Modelo.SesionActual;
+import Vista.BuscarContacto;
 import Vista.Principal;
+import java.awt.event.ActionEvent;
 
 /**
  *
@@ -17,6 +19,8 @@ public class ControlPrincipal {
 
     public ControlPrincipal(Principal form) {
         this.form = form;
+        this.form.getBtnBuscarContactos().addActionListener(this::buscarContactos);
+        this.form.getBtnListarMisContactos().addActionListener(this::listarMisContactos);
         mostrarDatosUsuario();
     }
     
@@ -28,6 +32,16 @@ public class ControlPrincipal {
         form.getLbNombre().setText(nombre);
         form.getLbCorreo().setText(correo);
         form.getLbEdad().setText(Integer.toString(edad));
+    }
+    
+    private void buscarContactos(ActionEvent e) {
+        BuscarContacto buscarCont = new BuscarContacto();
+        ControlBuscarContacto con = new ControlBuscarContacto(buscarCont);
+        buscarCont.setVisible(true);
+    }
+    
+    private void listarMisContactos(ActionEvent e) {
+        SesionActual.listarMisContactos();
     }
     
 }

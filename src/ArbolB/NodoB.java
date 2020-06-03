@@ -6,6 +6,7 @@
 package ArbolB;
 
 import Interfaces.Nodo;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -14,7 +15,7 @@ import java.util.Comparator;
  *
  * @author Equipo1
  */
-public class NodoB<T extends Comparable<T>> {
+public class NodoB<T extends Comparable<T>> implements Serializable {
 
     private int indiceLlave = 0;
     private Key<T>[] keys = null;

@@ -63,7 +63,7 @@ public class Contacto implements Comparable<Contacto>, Serializable {
 
     @Override
     public int compareTo(Contacto o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return correo.compareTo(o.getCorreo());
     }
     
 }

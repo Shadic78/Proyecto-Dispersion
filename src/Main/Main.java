@@ -31,8 +31,8 @@ public class Main {
     public static void generarTablas() {
         try {
             Hashtable<String, Contacto> tabla = new Hashtable();  
-            Contacto c = new Contacto("Carlos", 20, "carlos@gmail.com", "gongora05");
-            tabla.put(c.getCorreo(), c);
+            //Contacto c = new Contacto("Carlos", 20, "carlos@gmail.com", "gongora05");
+            //tabla.put(c.getCorreo(), c);
             ObjectOutputStream escribiendoFichero = new ObjectOutputStream(
                     new FileOutputStream("Datos/UsuariosRegistrados.txt"));
             escribiendoFichero.writeObject(tabla);

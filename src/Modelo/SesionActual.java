@@ -22,6 +22,18 @@ public class SesionActual {
         SesionActual.arbol = ArbolesUsuarios.cargarArbol(usuario);
     }
     
+    public static void agregarContacto(Contacto c) {
+        arbol.insertar(c);
+        ArbolesUsuarios.guardarArbol(arbol, rutaArbolB, usuario.getCorreo());
+    }
+    
+    public static void listarMisContactos() {
+        System.out.println("Recorrer arbol: ");
+        arbol.r();
+        System.out.println("\nTo string: ");
+        System.out.println(arbol.toString());
+    }
+    
     public static String getNombre() {
         return SesionActual.usuario.getNombre();
     }

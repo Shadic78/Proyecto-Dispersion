@@ -5,6 +5,9 @@
  */
 package Vista;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+
 /**
  *
  * @author Equipo1
@@ -28,101 +31,83 @@ public class InfoContacto extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        LbNombre = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        LbCorreo = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        LbEdad = new javax.swing.JLabel();
+        BtnAgregar = new javax.swing.JButton();
+        BtnAgregarContactos = new javax.swing.JButton();
+        BtnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(null);
+        setPreferredSize(new java.awt.Dimension(370, 152));
+        getContentPane().setLayout(new java.awt.FlowLayout());
 
-        jLabel1.setText("Usuario:");
+        jLabel1.setText("Nombre:");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(23, 22, 40, 14);
 
-        jLabel2.setText("usuario");
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(69, 22, 35, 14);
+        LbNombre.setText("usuario");
+        getContentPane().add(LbNombre);
 
         jLabel3.setText("Correo:");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(23, 47, 37, 14);
 
-        jLabel4.setText("correo");
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(70, 47, 31, 14);
+        LbCorreo.setText("correo");
+        getContentPane().add(LbCorreo);
 
         jLabel5.setText("Edad:");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(31, 72, 28, 14);
 
-        jLabel6.setText("edad");
-        getContentPane().add(jLabel6);
-        jLabel6.setBounds(69, 72, 24, 14);
+        LbEdad.setText("edad");
+        getContentPane().add(LbEdad);
 
-        jButton1.setText("Agregar");
-        getContentPane().add(jButton1);
-        jButton1.setBounds(23, 97, 71, 23);
+        BtnAgregar.setText("Agregar");
+        getContentPane().add(BtnAgregar);
 
-        jButton2.setText("Agregar sus contactos");
-        getContentPane().add(jButton2);
-        jButton2.setBounds(104, 97, 141, 23);
+        BtnAgregarContactos.setText("Agregar sus contactos");
+        getContentPane().add(BtnAgregarContactos);
 
-        jButton3.setText("Cancelar");
-        getContentPane().add(jButton3);
-        jButton3.setBounds(255, 97, 75, 23);
+        BtnCancelar.setText("Cancelar");
+        getContentPane().add(BtnCancelar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InfoContacto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InfoContacto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InfoContacto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InfoContacto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new InfoContacto().setVisible(true);
-            }
-        });
+    public JButton getBtnAgregar() {
+        return BtnAgregar;
     }
 
+    public JButton getBtnAgregarContactos() {
+        return BtnAgregarContactos;
+    }
+
+    public JButton getBtnCancelar() {
+        return BtnCancelar;
+    }
+
+    public JLabel getLbCorreo() {
+        return LbCorreo;
+    }
+
+    public JLabel getLbEdad() {
+        return LbEdad;
+    }
+
+    public JLabel getLbNombre() {
+        return LbNombre;
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton BtnAgregar;
+    private javax.swing.JButton BtnAgregarContactos;
+    private javax.swing.JButton BtnCancelar;
+    private javax.swing.JLabel LbCorreo;
+    private javax.swing.JLabel LbEdad;
+    private javax.swing.JLabel LbNombre;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     // End of variables declaration//GEN-END:variables
 }

@@ -14,7 +14,7 @@
                 <Property name="text" type="java.lang.String" value="Listar todos"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="BtnListarMisContactos">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Listar mis contactos"/>
               </Properties>
@@ -26,7 +26,7 @@
             <Property name="text" type="java.lang.String" value="Edici&#xf3;n"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+            <MenuItem class="javax.swing.JMenuItem" name="BtnBuscarContactos">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Buscar"/>
               </Properties>

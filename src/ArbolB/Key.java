@@ -5,10 +5,11 @@
  */
 package ArbolB;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Key<T extends Comparable<T>> implements Comparable<Key<T>> {
+public class Key<T extends Comparable<T>> implements Comparable<Key<T>>, Serializable {
 
     private T elemento;
 

@@ -44,7 +44,7 @@ public class ArbolesUsuarios {
             tabla = (Hashtable) leyendoFichero.readObject();
             leyendoFichero.close();
         } catch (IOException ex) {
-            System.out.println("Error io");
+            System.out.println("Error io leer tabla arboles");
         } catch (ClassNotFoundException ex) {
             System.out.println("Error class not found");
         }
@@ -76,7 +76,7 @@ public class ArbolesUsuarios {
             arbol = (ArbolB) leyendoFichero.readObject();
             leyendoFichero.close();
         } catch (IOException ex) {
-            System.out.println("Error io");
+            System.out.println("Error io cargar arbol");
         } catch (ClassNotFoundException ex) {
             System.out.println("Error class not found");
         }

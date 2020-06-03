@@ -6,6 +6,7 @@
 package Vista;
 
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 
 /**
  *
@@ -40,9 +41,9 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        BtnListarMisContactos = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        BtnBuscarContactos = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
 
@@ -71,15 +72,15 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem1.setText("Listar todos");
         jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setText("Listar mis contactos");
-        jMenu1.add(jMenuItem2);
+        BtnListarMisContactos.setText("Listar mis contactos");
+        jMenu1.add(BtnListarMisContactos);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edición");
 
-        jMenuItem3.setText("Buscar");
-        jMenu2.add(jMenuItem3);
+        BtnBuscarContactos.setText("Buscar");
+        jMenu2.add(BtnBuscarContactos);
 
         jMenuItem4.setText("Eliminar contactos");
         jMenu2.add(jMenuItem4);
@@ -155,7 +156,17 @@ public class Principal extends javax.swing.JFrame {
         return LbNombre;
     }
 
+    public JMenuItem getBtnBuscarContactos() {
+        return BtnBuscarContactos;
+    }
+
+    public JMenuItem getBtnListarMisContactos() {
+        return BtnListarMisContactos;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem BtnBuscarContactos;
+    private javax.swing.JMenuItem BtnListarMisContactos;
     private javax.swing.JLabel LbCorreo;
     private javax.swing.JLabel LbEdad;
     private javax.swing.JLabel LbNombre;
@@ -168,8 +179,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     // End of variables declaration//GEN-END:variables

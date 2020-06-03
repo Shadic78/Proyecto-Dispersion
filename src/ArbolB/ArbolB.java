@@ -37,7 +37,12 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
     }
 
     public void r() {
-        recorrerArbol(root);
+        if(root != null) {
+            recorrerArbol(root);            
+        }
+        else {
+            System.out.println("La raiz es null, size: " + size);
+        }
     }
 
     public void recorrerArbol(NodoB<T> node) {

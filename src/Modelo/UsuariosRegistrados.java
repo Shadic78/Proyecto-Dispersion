@@ -40,6 +40,10 @@ public class UsuariosRegistrados {
         return registrado;
     }
     
+    public static Contacto getUsuario(String correo) {
+        return UsuariosRegistrados.getTablaGuardada().get(correo);
+    }
+    
     public static Hashtable<String, Contacto> getTablaGuardada() {
         Hashtable<String, Contacto> tabla = new Hashtable();        
         try {
