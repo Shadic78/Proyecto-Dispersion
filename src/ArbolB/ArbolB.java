@@ -233,7 +233,9 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
     public Key<T> remove(T value) {
         Key<T> removed = null;
         NodoB<T> node = this.getNode(value);
+        System.out.println("Nodo: " + node);
         removed = remove(value, node);
+        System.out.println("removido: " + removed);
         return removed;
     }
 
@@ -246,12 +248,14 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
      */
     private Key<T> remove(T value, NodoB<T> node) {
         if (node == null) {
+            System.out.println("null xd");
             return null;
         }
 
         Key<T> removed = null;
         int index = node.indexOf(value);
         removed = node.removeKey(value);
+        System.out.println("removed key: " + removed);
         if (node.numberOfChildren() == 0) {
             // leaf node
             if (node.getParent() != null && node.numberOfKeys() < minKeySize) {
@@ -629,6 +633,7 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
      */
     @Override
     public String toString() {
+        System.out.println("Size arbol: " + this.size);
         return TreePrinter.getString(this);
 
     }
@@ -720,7 +725,7 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
                     builder.append(getString(obj, prefix + (isTail ? "    " : "│   "), true));
                 }
             }
-
+            
             return builder.toString();
         }
     }

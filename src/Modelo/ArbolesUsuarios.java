@@ -13,7 +13,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -95,6 +98,18 @@ public class ArbolesUsuarios {
             System.out.println("Error al guardar el arbol");
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }        
+    }
+    
+    public static ArrayList<ArbolB<Contacto>> getTodosLosArboles() {
+        ArrayList<ArbolB<Contacto>> arboles = new ArrayList<>();
+        ArrayList<Contacto> usuarios = UsuariosRegistrados.getTodosLosUsuarios();
+        
+        for(int i = 0; i < usuarios.size(); i++) {
+            ArbolB<Contacto> arbol = ArbolesUsuarios.cargarArbol(usuarios.get(i));
+            arboles.add(arbol);
+        }
+        
+        return arboles;
     }
     
 }

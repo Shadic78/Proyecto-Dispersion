@@ -11,9 +11,11 @@ import Modelo.SesionActual;
 import Modelo.UsuariosRegistrados;
 import Vista.BuscarContacto;
 import Vista.ListarContactos;
+import Vista.Login;
 import Vista.Principal;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -28,6 +30,7 @@ public class ControlPrincipal {
         this.form.getBtnBuscarContactos().addActionListener(this::buscarContactos);
         this.form.getBtnListarMisContactos().addActionListener(this::listarMisContactos);
         this.form.getBtnListarTodos().addActionListener(this::listarTodos);
+        this.form.getBtnBorrarCuenta().addActionListener(this::borrarMiCuenta);
         this.modeloTablas = new ModeloTablaContactos();
         mostrarDatosUsuario();
     }
@@ -56,6 +59,20 @@ public class ControlPrincipal {
     private void listarTodos(ActionEvent e) {
         ArrayList<Contacto> contactos = UsuariosRegistrados.getTodosLosUsuarios();
         crearTabla(contactos, "Todos los usuarios registrados");
+    }
+    
+    private void borrarMiCuenta(ActionEvent e) {
+        // Si - 0, No - 1
+        int opcion = JOptionPane.showConfirmDialog(null, "¿Estas seguro de querer borrar tu cuenta?", "Borrar cuenta", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if(opcion == 0) {
+            SesionActual.borrarCuenta();
+            JOptionPane.showMessageDialog(null, "La cuenta fue borrada");
+            
+            Login login = new Login();
+            ControlLogin con = new ControlLogin(login);
+            login.setVisible(true);
+            form.dispose();
+        }
     }
     
     private void crearTabla(ArrayList<Contacto> contactos, String titulo) {

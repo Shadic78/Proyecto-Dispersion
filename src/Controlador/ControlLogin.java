@@ -44,7 +44,7 @@ public class ControlLogin {
             Contacto usuario = usuariosRegistrados.get(correo);
             if(usuario != null) {
                 if(usuario.getPassword().equals(pass)) {
-                    JOptionPane.showMessageDialog(null, "Inicio sesión");
+                    JOptionPane.showMessageDialog(null, "Inició sesión");
 
                     SesionActual.cargarDatos(usuario);
                     Principal menu = new Principal();

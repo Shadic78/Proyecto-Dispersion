@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import ArbolB.ArbolB;
 import Main.Main;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -84,6 +85,37 @@ public class UsuariosRegistrados {
             listaUsuarios.add(itr.next());
         }
         return listaUsuarios;
+    }
+    
+    public static void borrarUsuario(Contacto c) {
+        // Quitar el usuario de la tabla de usuarios registrados        
+        Hashtable<String, Contacto> tablaUsuarios = UsuariosRegistrados.getTablaGuardada();
+        tablaUsuarios.remove(c.getCorreo());
+        UsuariosRegistrados.guardarTabla(tablaUsuarios);
+        
+        // Quitar la ruta del arbol de la tabla de arboles
+        Hashtable<String, String> tablaArboles = ArbolesUsuarios.getTablaGuardada();
+        tablaArboles.remove(c.getCorreo());
+        ArbolesUsuarios.guardarTabla(tablaArboles);
+        
+        // Borrar la cuenta de los contactos de todos
+        UsuariosRegistrados.borrarContactoDeTodos(c);
+    }
+    
+    private static void borrarContactoDeTodos(Contacto c) {
+        ArrayList<ArbolB<Contacto>> arboles = ArbolesUsuarios.getTodosLosArboles();
+        ArrayList<Contacto> usuarios = UsuariosRegistrados.getTodosLosUsuarios();
+        Hashtable<String, String> tablaArboles = ArbolesUsuarios.getTablaGuardada();
+        
+        for(int i = 0; i < arboles.size(); i++) {
+            Contacto contacto = usuarios.get(i);
+            ArbolB<Contacto> arbol = arboles.get(i);
+            String ruta = tablaArboles.get(contacto.getCorreo());
+            
+            arbol.remove(c);
+            ArbolesUsuarios.guardarArbol(arbol, ruta, contacto.getCorreo());
+        }
+        
     }
     
 }

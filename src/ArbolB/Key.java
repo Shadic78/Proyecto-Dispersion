@@ -5,6 +5,7 @@
  */
 package ArbolB;
 
+import Modelo.Contacto;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -32,7 +33,7 @@ public class Key<T extends Comparable<T>> implements Comparable<Key<T>>, Seriali
 
     @Override
     public String toString() {
-        return "elemento = " + elemento;
+        return elemento.toString();
     }
 
 }

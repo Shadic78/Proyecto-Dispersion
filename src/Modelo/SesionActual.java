@@ -38,6 +38,10 @@ public class SesionActual {
         return misContactos;
     }
     
+    public static void borrarCuenta() {
+        UsuariosRegistrados.borrarUsuario(usuario);
+    }
+    
     public static String getNombre() {
         return SesionActual.usuario.getNombre();
     }

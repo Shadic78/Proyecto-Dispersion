@@ -113,9 +113,14 @@ public class NodoB<T extends Comparable<T>> implements Serializable {
             return null;
         }
         for (int i = 0; i < keysSize; i++) {
+            System.out.println("key: " + keys[i]);
+            System.out.println("value: " + value);
+            System.out.println("equals: " + keys[i] == value);
             if (keys[i].equals(value)) {
+            //if(keys[i].compareTo(new Key(value)) == 0) {
                 found = true;
                 removed = keys[i];
+                System.out.println("entro");
             } else if (found) {
                 // shift the rest of the keys down
                 keys[i - 1] = keys[i];

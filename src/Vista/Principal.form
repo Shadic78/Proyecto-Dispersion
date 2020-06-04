@@ -36,7 +36,7 @@
                 <Property name="text" type="java.lang.String" value="Eliminar contactos"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
+            <MenuItem class="javax.swing.JMenuItem" name="BtnBorrarCuenta">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Borrar mi cuenta"/>
               </Properties>
