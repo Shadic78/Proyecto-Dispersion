@@ -41,7 +41,8 @@ public class ControlInfoContacto {
     }
     
     private void agregarTodosLosContactos(ActionEvent e) {
-        
+        SesionActual.agregarTodosLosContactos(contacto);
+        JOptionPane.showMessageDialog(null, "Agregaste los contactos de " + contacto.getNombre() + " a tus contactos");        
     }
     
     private void cancelar(ActionEvent e) {

@@ -123,18 +123,21 @@ public class UsuariosRegistrados {
             }
             
         } catch (NoDatosException ex) {
-            Logger.getLogger(UsuariosRegistrados.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("NoDatosException borrarContactoDeTodos");
+            //Logger.getLogger(UsuariosRegistrados.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        /*for(int i = 0; i < arboles.size(); i++) {
-            Contacto contacto = usuarios.get(i);
-            ArbolB<Contacto> arbol = arboles.get(i);
-            String ruta = tablaArboles.get(contacto.getCorreo());
-            
-            arbol.remove(c);
-            ArbolesUsuarios.guardarArbol(arbol, ruta, contacto.getCorreo());
-        }*/
-        
+    }
+    
+    public static ArrayList<Contacto> getContactos(Contacto c) {
+        ArrayList<Contacto> lista = new ArrayList<>();
+        try {
+            ArbolB<Contacto> arbolUsuario = ArbolesUsuarios.cargarArbol(c);  
+            lista = arbolUsuario.enlistarElementos();            
+        } catch (NoDatosException ex) {
+            System.out.println("No datos exception getContactos(c)");
+        }
+        return lista;
     }
     
     private static Contacto obtenerContacto(Contacto c, ArrayList<Contacto> lista) {

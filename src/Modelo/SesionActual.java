@@ -24,6 +24,7 @@ public class SesionActual {
         SesionActual.usuario = usuario;
         SesionActual.rutaArbolB = ArbolesUsuarios.getRutaArbol(usuario.getCorreo());
         SesionActual.arbol = ArbolesUsuarios.cargarArbol(usuario);
+        SesionActual.validarMisContactos();
     }
     
     public static void agregarContacto(Contacto c) {
@@ -69,6 +70,44 @@ public class SesionActual {
         }
     }
     
+    public static void agregarTodosLosContactos(Contacto c) {
+        ArrayList<Contacto> contactos = UsuariosRegistrados.getContactos(c);
+        for(int i = 0; i < contactos.size(); i++) {
+            SesionActual.agregarContacto(contactos.get(i));
+        }
+    }
+    
+    public static void validarMisContactos() {
+        ArrayList<Contacto> usuarios = UsuariosRegistrados.getTodosLosUsuarios();
+        ArrayList<Contacto> misContactos = SesionActual.listarMisContactos();
+        System.out.println("Registrados: " + usuarios);
+        System.out.println("Mis contactos: " + misContactos);
+        int sizeContactos = misContactos.size();
+        boolean estaRegistrado = false;
+        
+        for(int i = 0; i < misContactos.size(); i++) {
+            estaRegistrado = false;
+            for(int j = 0; j < usuarios.size(); j++) {
+                if(misContactos.get(i).getCorreo().equals(usuarios.get(j).getCorreo())) {
+                    estaRegistrado = true;
+                    break;
+                }
+            }
+            if(!estaRegistrado) {
+                misContactos.remove(i);
+            }
+        }
+        
+        if(sizeContactos > misContactos.size()) {
+            ArbolB<Contacto> arbolNuevo = new ArbolB<>();
+            for(int i = 0; i < misContactos.size(); i++) {
+                arbolNuevo.add(misContactos.get(i));
+            }
+            SesionActual.setArbol(arbolNuevo);
+            ArbolesUsuarios.guardarArbol(arbolNuevo, rutaArbolB, SesionActual.getCorreo());
+        }
+    }
+    
     public static String getNombre() {
         return SesionActual.usuario.getNombre();
     }
@@ -80,5 +119,9 @@ public class SesionActual {
     public static int getEdad() {
         return SesionActual.usuario.getEdad();
     }    
+    
+    public static void setArbol(ArbolB arbol) {
+        SesionActual.arbol = arbol;
+    }
     
 }
