@@ -31,23 +31,42 @@ public class SesionActual {
         ArbolesUsuarios.guardarArbol(arbol, rutaArbolB, usuario.getCorreo());
     }
     
+    public static Contacto getContacto(String correo) {
+        Contacto c = null;
+        ArrayList<Contacto> lista = SesionActual.listarMisContactos();
+        for(int i = 0; i < lista.size(); i++) {
+            if(lista.get(i).getCorreo().equals(correo)) {
+                c = lista.get(i);
+                break;
+            }
+        }
+        return c;
+    }
+    
     public static ArrayList<Contacto> listarMisContactos() {
         ArrayList<Contacto> misContactos = new ArrayList<>();        
         try {
             misContactos = arbol.enlistarElementos();
-            System.out.println("Array de contactos: ");
-            System.out.println(misContactos);
-            System.out.println("\nTo string: ");
-            System.out.println(arbol.toString());
         } catch (NoDatosException ex) {
             System.out.println("No datos exception listarMisContactos");
-            Logger.getLogger(SesionActual.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(SesionActual.class.getName()).log(Level.SEVERE, null, ex);
         }
         return misContactos;
     }
     
     public static void borrarCuenta() {
         UsuariosRegistrados.borrarUsuario(usuario);
+    }
+    
+    public static void eliminarContacto(Contacto c) {
+        ArrayList<Contacto> misContactos = SesionActual.listarMisContactos();
+        for(int i = 0; i < misContactos.size(); i++) {
+            if(misContactos.get(i).getCorreo().equals(c.getCorreo())) {
+                arbol.remove(misContactos.get(i));
+                ArbolesUsuarios.guardarArbol(arbol, rutaArbolB, SesionActual.getCorreo());
+                break;
+            }
+        }
     }
     
     public static String getNombre() {

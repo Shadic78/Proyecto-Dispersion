@@ -31,7 +31,7 @@
                 <Property name="text" type="java.lang.String" value="Buscar"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
+            <MenuItem class="javax.swing.JMenuItem" name="BtnEliminarContacto">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Eliminar contactos"/>
               </Properties>

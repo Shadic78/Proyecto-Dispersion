@@ -44,7 +44,7 @@ public class Principal extends javax.swing.JFrame {
         BtnListarMisContactos = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         BtnBuscarContactos = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        BtnEliminarContacto = new javax.swing.JMenuItem();
         BtnBorrarCuenta = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -82,8 +82,8 @@ public class Principal extends javax.swing.JFrame {
         BtnBuscarContactos.setText("Buscar");
         jMenu2.add(BtnBuscarContactos);
 
-        jMenuItem4.setText("Eliminar contactos");
-        jMenu2.add(jMenuItem4);
+        BtnEliminarContacto.setText("Eliminar contactos");
+        jMenu2.add(BtnEliminarContacto);
 
         BtnBorrarCuenta.setText("Borrar mi cuenta");
         jMenu2.add(BtnBorrarCuenta);
@@ -172,9 +172,14 @@ public class Principal extends javax.swing.JFrame {
         return BtnBorrarCuenta;
     }
 
+    public JMenuItem getBtnEliminarContacto() {
+        return BtnEliminarContacto;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem BtnBorrarCuenta;
     private javax.swing.JMenuItem BtnBuscarContactos;
+    private javax.swing.JMenuItem BtnEliminarContacto;
     private javax.swing.JMenuItem BtnListarMisContactos;
     private javax.swing.JMenuItem BtnListarTodos;
     private javax.swing.JLabel LbCorreo;
@@ -188,6 +193,5 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem4;
     // End of variables declaration//GEN-END:variables
 }

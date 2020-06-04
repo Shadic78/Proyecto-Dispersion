@@ -31,6 +31,7 @@ public class ControlPrincipal {
         this.form.getBtnListarMisContactos().addActionListener(this::listarMisContactos);
         this.form.getBtnListarTodos().addActionListener(this::listarTodos);
         this.form.getBtnBorrarCuenta().addActionListener(this::borrarMiCuenta);
+        this.form.getBtnEliminarContacto().addActionListener(this::eliminarContacto);
         this.modeloTablas = new ModeloTablaContactos();
         mostrarDatosUsuario();
     }
@@ -81,6 +82,12 @@ public class ControlPrincipal {
         
         modeloTablas.rellenarTabla(formTabla.getTableContactos(), contactos);
         formTabla.setVisible(true);        
+    }
+    
+    private void eliminarContacto(ActionEvent e) {
+        BuscarContacto bus = new BuscarContacto();
+        ControlBuscarEliminarContacto con = new ControlBuscarEliminarContacto(bus);
+        bus.setVisible(true);
     }
     
 }
