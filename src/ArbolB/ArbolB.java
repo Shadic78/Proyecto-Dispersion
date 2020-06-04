@@ -1,14 +1,14 @@
 package ArbolB;
 
-import Excepciones.ItemNotFoundException;
-import Interfaces.Arbol;
-import Interfaces.Nodo;
-import Modelo.Contacto;
+import Excepciones.NoDatosException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 
-public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
+public class ArbolB<T extends Comparable<T>> implements Serializable {
 
     // Default to 2-3 Tree
     private int minKeySize = 1;
@@ -16,7 +16,7 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
     private int maxKeySize = 2 * minKeySize; // 2
     private int maxChildrenSize = maxKeySize + 1; // 3
 
-    private NodoB<T> root = null;
+    private Node<T> root = null;
     private int size = 0;
 
     /**
@@ -37,97 +37,21 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
         this.maxChildrenSize = order;
     }
 
-    public void getElementos(ArrayList<Contacto> lista) {
-        if(root != null) {
-            recorrerArbol(root, lista);            
-        }
-        else {
-            System.out.println("La raiz es null, size: " + size);
-        }
-    }
-
-    public void recorrerArbol(NodoB<T> node, ArrayList<Contacto> lista) {
-        int x = 0;
-        for (int i = 0; i < node.numberOfChildren(); i++) {
-            if (node.getChild(i) != null) {
-                recorrerArbol(node.getChild(i), lista);
-            }
-            if (x <= node.numberOfKeys() && node.getKey(x) != null) {
-                lista.add((Contacto) node.getKey(x++).getElemento());
-                System.out.println(node.getKey(x));
-            }
-        }
-        if (isShet(node)) {
-            for (int i = 0; i < node.numberOfKeys(); i++) {
-                lista.add((Contacto) node.getKey(i).getElemento());
-                System.out.println(node.getKey(i));
-            }
-        }
-
-    }
-
-    /*private void recorrerArbol(NodoB<T> node, ArrayList<Integer> indices) {
-        int x = 0;
-
-        for (int i = 0; i < node.numberOfChildren(); i++) {
-            if (node.getChild(i) != null) {
-                recorrerArbol(node.getChild(i), indices);
-            }
-            if (x <= node.numberOfKeys() && node.getKey(x) != null) {
-                Key<T> actKey = node.getKey(x++);
-               // for (int j = 0; j < actKey.getIndiceEgresados().size(); j++) {
-               //     indices.add(actKey.getIndiceEgresados().get(j));
-                //}
-                System.out.println(actKey);
-            }
-        }
-        if (isShet(node)) {
-
-            for (int i = 0; i < node.numberOfKeys(); i++) {
-                Key<T> actKey = node.getKey(i);
-               // for (int j = 0; j < actKey.getIndiceEgresados().size(); j++) {
-               //     indices.add(actKey.getIndiceEgresados().get(j));
-                //}
-                System.out.println(actKey);
-            }
-        }
-
-    }*/   
-
-    private boolean isShet(NodoB<T> n) {
-        return n.numberOfChildren() == 0;
-
-    }
-
     /**
      * {@inheritDoc}
      */
-    @Override
-    public void insertar(T elemento) {
+    public boolean add(T value) {
+        if (contains(value)) {
+            return false;
+        }
         if (root == null) {
-            root = new NodoB<T>(null, maxKeySize, maxChildrenSize);
-            Key<T> key = new Key<>(elemento);
-            //key.getIndiceEgresados().add(indice);
-            root.addKey(key);
+            root = new Node<T>(null, maxKeySize, maxChildrenSize);
+            root.addKey(value);
         } else {
-            NodoB<T> node = root;
+            Node<T> node = root;
             while (node != null) {
-                //Search for a repetid key
-                boolean repitKey = false;
-                for (int i = 0; i < node.numberOfKeys(); i++) {
-                    if (node.getKey(i).getElemento().compareTo(elemento) == 0) {
-                        //node.getKey(i).getIndiceEgresados().add(indice);
-                        repitKey = true;
-                        break;
-                    }
-                }
-                if (repitKey) {
-                    break;
-                }
                 if (node.numberOfChildren() == 0) {
-                    Key<T> key = new Key<>(elemento);
-                    //key.getIndiceEgresados().add(indice);
-                    node.addKey(key);
+                    node.addKey(value);
                     if (node.numberOfKeys() <= maxKeySize) {
                         // A-OK
                         break;
@@ -136,12 +60,11 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
                     split(node);
                     break;
                 }
-
                 // Navigate
-                // Lesser o
-                Key<T> lesser = node.getKey(0);
-                //Si es igual se agrega un indice
-                if (elemento.compareTo(lesser.getElemento()) < 0) {
+
+                // Lesser or equal
+                T lesser = node.getKey(0);
+                if (value.compareTo(lesser) <= 0) {
                     node = node.getChild(0);
                     continue;
                 }
@@ -149,26 +72,27 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
                 // Greater
                 int numberOfKeys = node.numberOfKeys();
                 int last = numberOfKeys - 1;
-                Key<T> greater = node.getKey(last);
-                //Si es igual se agrega un indice
-                if (elemento.compareTo(greater.getElemento()) > 0) {
+                T greater = node.getKey(last);
+                if (value.compareTo(greater) > 0) {
                     node = node.getChild(numberOfKeys);
                     continue;
                 }
 
                 // Search internal nodes
                 for (int i = 1; i < node.numberOfKeys(); i++) {
-                    Key<T> prev = node.getKey(i - 1);
-                    Key<T> next = node.getKey(i);
-
-                    if (elemento.compareTo(prev.getElemento()) > 0 && elemento.compareTo(next.getElemento()) <= 0) {
+                    T prev = node.getKey(i - 1);
+                    T next = node.getKey(i);
+                    if (value.compareTo(prev) > 0 && value.compareTo(next) <= 0) {
                         node = node.getChild(i);
                         break;
                     }
                 }
             }
         }
+
         size++;
+
+        return true;
     }
 
     /**
@@ -176,46 +100,46 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
      *
      * @param nodeToSplit to split.
      */
-    private void split(NodoB<T> nodeToSplit) {
-        NodoB<T> node = nodeToSplit;
+    private void split(Node<T> nodeToSplit) {
+        Node<T> node = nodeToSplit;
         int numberOfKeys = node.numberOfKeys();
         int medianIndex = numberOfKeys / 2;
-        Key<T> medianValue = node.getKey(medianIndex);
+        T medianValue = node.getKey(medianIndex);
 
-        NodoB<T> left = new NodoB<T>(null, maxKeySize, maxChildrenSize);
+        Node<T> left = new Node<T>(null, maxKeySize, maxChildrenSize);
         for (int i = 0; i < medianIndex; i++) {
             left.addKey(node.getKey(i));
         }
         if (node.numberOfChildren() > 0) {
             for (int j = 0; j <= medianIndex; j++) {
-                NodoB<T> c = node.getChild(j);
+                Node<T> c = node.getChild(j);
                 left.addChild(c);
             }
         }
 
-        NodoB<T> right = new NodoB<T>(null, maxKeySize, maxChildrenSize);
+        Node<T> right = new Node<T>(null, maxKeySize, maxChildrenSize);
         for (int i = medianIndex + 1; i < numberOfKeys; i++) {
             right.addKey(node.getKey(i));
         }
         if (node.numberOfChildren() > 0) {
             for (int j = medianIndex + 1; j < node.numberOfChildren(); j++) {
-                NodoB<T> c = node.getChild(j);
+                Node<T> c = node.getChild(j);
                 right.addChild(c);
             }
         }
 
-        if (node.getParent() == null) {
+        if (node.parent == null) {
             // new root, height of tree is increased
-            NodoB<T> newRoot = new NodoB<T>(null, maxKeySize, maxChildrenSize);
+            Node<T> newRoot = new Node<T>(null, maxKeySize, maxChildrenSize);
             newRoot.addKey(medianValue);
-            node.setParent(newRoot);
+            node.parent = newRoot;
             root = newRoot;
             node = root;
             node.addChild(left);
             node.addChild(right);
         } else {
             // Move the median value up to the parent
-            NodoB<T> parent = node.getParent();
+            Node<T> parent = node.parent;
             parent.addKey(medianValue);
             parent.removeChild(node);
             parent.addChild(left);
@@ -230,12 +154,10 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
     /**
      * {@inheritDoc}
      */
-    public Key<T> remove(T value) {
-        Key<T> removed = null;
-        NodoB<T> node = this.getNode(value);
-        System.out.println("Nodo: " + node);
+    public T remove(T value) {
+        T removed = null;
+        Node<T> node = this.getNode(value);
         removed = remove(value, node);
-        System.out.println("removido: " + removed);
         return removed;
     }
 
@@ -246,31 +168,29 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
      * @param node Node to remove value from
      * @return True if value was removed from the tree.
      */
-    private Key<T> remove(T value, NodoB<T> node) {
+    private T remove(T value, Node<T> node) {
         if (node == null) {
-            System.out.println("null xd");
             return null;
         }
 
-        Key<T> removed = null;
+        T removed = null;
         int index = node.indexOf(value);
         removed = node.removeKey(value);
-        System.out.println("removed key: " + removed);
         if (node.numberOfChildren() == 0) {
             // leaf node
-            if (node.getParent() != null && node.numberOfKeys() < minKeySize) {
+            if (node.parent != null && node.numberOfKeys() < minKeySize) {
                 this.combined(node);
-            } else if (node.getParent() == null && node.numberOfKeys() == 0) {
+            } else if (node.parent == null && node.numberOfKeys() == 0) {
                 // Removing root node with no keys or children
                 root = null;
             }
         } else {
             // internal node
-            NodoB<T> lesser = node.getChild(index);
-            NodoB<T> greatest = this.getGreatestNode(lesser);
-            Key<T> replaceValue = this.removeGreatestValue(greatest);
+            Node<T> lesser = node.getChild(index);
+            Node<T> greatest = this.getGreatestNode(lesser);
+            T replaceValue = this.removeGreatestValue(greatest);
             node.addKey(replaceValue);
-            if (greatest.getParent() != null && greatest.numberOfKeys() < minKeySize) {
+            if (greatest.parent != null && greatest.numberOfKeys() < minKeySize) {
                 this.combined(greatest);
             }
             if (greatest.numberOfChildren() > maxChildrenSize) {
@@ -289,8 +209,8 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
      * @param node to remove greatest value from.
      * @return value removed;
      */
-    private Key<T> removeGreatestValue(NodoB<T> node) {
-        Key<T> value = null;
+    private T removeGreatestValue(Node<T> node) {
+        T value = null;
         if (node.numberOfKeys() > 0) {
             value = node.removeKey(node.numberOfKeys() - 1);
         }
@@ -309,7 +229,7 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
      * {@inheritDoc}
      */
     public boolean contains(T value) {
-        NodoB<T> node = getNode(value);
+        Node<T> node = getNode(value);
         return (node != null);
     }
 
@@ -319,11 +239,11 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
      * @param value to find in the tree.
      * @return Node<T> with value.
      */
-    private NodoB<T> getNode(T value) {
-        NodoB<T> node = root;
+    private Node<T> getNode(T value) {
+        Node<T> node = root;
         while (node != null) {
-            Key<T> lesser = node.getKey(0);
-            if (value.compareTo(lesser.getElemento()) < 0) {
+            T lesser = node.getKey(0);
+            if (value.compareTo(lesser) < 0) {
                 if (node.numberOfChildren() > 0) {
                     node = node.getChild(0);
                 } else {
@@ -334,8 +254,8 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
 
             int numberOfKeys = node.numberOfKeys();
             int last = numberOfKeys - 1;
-            Key<T> greater = node.getKey(last);
-            if (value.compareTo(greater.getElemento()) > 0) {
+            T greater = node.getKey(last);
+            if (value.compareTo(greater) > 0) {
                 if (node.numberOfChildren() > numberOfKeys) {
                     node = node.getChild(numberOfKeys);
                 } else {
@@ -345,15 +265,15 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
             }
 
             for (int i = 0; i < numberOfKeys; i++) {
-                Key<T> currentValue = node.getKey(i);
-                if (currentValue.getElemento().compareTo(value) == 0) {
+                T currentValue = node.getKey(i);
+                if (currentValue.compareTo(value) == 0) {
                     return node;
                 }
 
                 int next = i + 1;
                 if (next <= last) {
-                    Key<T> nextValue = node.getKey(next);
-                    if (currentValue.getElemento().compareTo(value) < 0 && nextValue.getElemento().compareTo(value) > 0) {
+                    T nextValue = node.getKey(next);
+                    if (currentValue.compareTo(value) < 0 && nextValue.compareTo(value) > 0) {
                         if (next < node.numberOfChildren()) {
                             node = node.getChild(next);
                             break;
@@ -372,8 +292,8 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
      * @param nodeToGet child with the greatest value.
      * @return Node<T> child with greatest value.
      */
-    private NodoB<T> getGreatestNode(NodoB<T> nodeToGet) {
-        NodoB<T> node = nodeToGet;
+    private Node<T> getGreatestNode(Node<T> nodeToGet) {
+        Node<T> node = nodeToGet;
         while (node.numberOfChildren() > 0) {
             node = node.getChild(node.numberOfChildren() - 1);
         }
@@ -386,13 +306,13 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
      * @param node with children to combined.
      * @return True if combined successfully.
      */
-    private boolean combined(NodoB<T> node) {
-        NodoB<T> parent = node.getParent();
+    private boolean combined(Node<T> node) {
+        Node<T> parent = node.parent;
         int index = parent.indexOf(node);
         int indexOfLeftNeighbor = index - 1;
         int indexOfRightNeighbor = index + 1;
 
-        NodoB<T> rightNeighbor = null;
+        Node<T> rightNeighbor = null;
         int rightNeighborSize = -minChildrenSize;
         if (indexOfRightNeighbor < parent.numberOfChildren()) {
             rightNeighbor = parent.getChild(indexOfRightNeighbor);
@@ -402,17 +322,17 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
         // Try to borrow neighbor
         if (rightNeighbor != null && rightNeighborSize > minKeySize) {
             // Try to borrow from right neighbor
-            Key<T> removeValue = rightNeighbor.getKey(0);
-            int prev = getIndexOfPreviousValue(parent, removeValue.getElemento());
-            Key<T> parentValue = parent.removeKey(prev);
-            Key<T> neighborValue = rightNeighbor.removeKey(0);
+            T removeValue = rightNeighbor.getKey(0);
+            int prev = getIndexOfPreviousValue(parent, removeValue);
+            T parentValue = parent.removeKey(prev);
+            T neighborValue = rightNeighbor.removeKey(0);
             node.addKey(parentValue);
             parent.addKey(neighborValue);
             if (rightNeighbor.numberOfChildren() > 0) {
                 node.addChild(rightNeighbor.removeChild(0));
             }
         } else {
-            NodoB<T> leftNeighbor = null;
+            Node<T> leftNeighbor = null;
             int leftNeighborSize = -minChildrenSize;
             if (indexOfLeftNeighbor >= 0) {
                 leftNeighbor = parent.getChild(indexOfLeftNeighbor);
@@ -421,10 +341,10 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
 
             if (leftNeighbor != null && leftNeighborSize > minKeySize) {
                 // Try to borrow from left neighbor
-                Key<T> removeValue = leftNeighbor.getKey(leftNeighbor.numberOfKeys() - 1);
-                int prev = getIndexOfNextValue(parent, removeValue.getElemento());
-                Key<T> parentValue = parent.removeKey(prev);
-                Key<T> neighborValue = leftNeighbor.removeKey(leftNeighbor.numberOfKeys() - 1);
+                T removeValue = leftNeighbor.getKey(leftNeighbor.numberOfKeys() - 1);
+                int prev = getIndexOfNextValue(parent, removeValue);
+                T parentValue = parent.removeKey(prev);
+                T neighborValue = leftNeighbor.removeKey(leftNeighbor.numberOfKeys() - 1);
                 node.addKey(parentValue);
                 parent.addKey(neighborValue);
                 if (leftNeighbor.numberOfChildren() > 0) {
@@ -432,52 +352,52 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
                 }
             } else if (rightNeighbor != null && parent.numberOfKeys() > 0) {
                 // Can't borrow from neighbors, try to combined with right neighbor
-                Key<T> removeValue = rightNeighbor.getKey(0);
-                int prev = getIndexOfPreviousValue(parent, removeValue.getElemento());
-                Key<T> parentValue = parent.removeKey(prev);
+                T removeValue = rightNeighbor.getKey(0);
+                int prev = getIndexOfPreviousValue(parent, removeValue);
+                T parentValue = parent.removeKey(prev);
                 parent.removeChild(rightNeighbor);
                 node.addKey(parentValue);
-                for (int i = 0; i < rightNeighbor.getKeysSize(); i++) {
-                    Key<T> v = rightNeighbor.getKey(i);
+                for (int i = 0; i < rightNeighbor.keysSize; i++) {
+                    T v = rightNeighbor.getKey(i);
                     node.addKey(v);
                 }
-                for (int i = 0; i < rightNeighbor.getChildrenSize(); i++) {
-                    NodoB<T> c = rightNeighbor.getChild(i);
+                for (int i = 0; i < rightNeighbor.childrenSize; i++) {
+                    Node<T> c = rightNeighbor.getChild(i);
                     node.addChild(c);
                 }
 
-                if (parent.getParent() != null && parent.numberOfKeys() < minKeySize) {
+                if (parent.parent != null && parent.numberOfKeys() < minKeySize) {
                     // removing key made parent too small, combined up tree
                     this.combined(parent);
                 } else if (parent.numberOfKeys() == 0) {
                     // parent no longer has keys, make this node the new root
                     // which decreases the height of the tree
-                    node.setParent(null);
+                    node.parent = null;
                     root = node;
                 }
             } else if (leftNeighbor != null && parent.numberOfKeys() > 0) {
                 // Can't borrow from neighbors, try to combined with left neighbor
-                Key<T> removeValue = leftNeighbor.getKey(leftNeighbor.numberOfKeys() - 1);
-                int prev = getIndexOfNextValue(parent, removeValue.getElemento());
-                Key<T> parentValue = parent.removeKey(prev);
+                T removeValue = leftNeighbor.getKey(leftNeighbor.numberOfKeys() - 1);
+                int prev = getIndexOfNextValue(parent, removeValue);
+                T parentValue = parent.removeKey(prev);
                 parent.removeChild(leftNeighbor);
                 node.addKey(parentValue);
-                for (int i = 0; i < leftNeighbor.getKeysSize(); i++) {
-                    Key<T> v = leftNeighbor.getKey(i);
+                for (int i = 0; i < leftNeighbor.keysSize; i++) {
+                    T v = leftNeighbor.getKey(i);
                     node.addKey(v);
                 }
-                for (int i = 0; i < leftNeighbor.getKeysSize(); i++) {
-                    NodoB<T> c = leftNeighbor.getChild(i);
+                for (int i = 0; i < leftNeighbor.childrenSize; i++) {
+                    Node<T> c = leftNeighbor.getChild(i);
                     node.addChild(c);
                 }
 
-                if (parent.getParent() != null && parent.numberOfKeys() < minKeySize) {
+                if (parent.parent != null && parent.numberOfKeys() < minKeySize) {
                     // removing key made parent too small, combined up tree
                     this.combined(parent);
                 } else if (parent.numberOfKeys() == 0) {
                     // parent no longer has keys, make this node the new root
                     // which decreases the height of the tree
-                    node.setParent(null);
+                    node.parent = null;
                     root = node;
                 }
             }
@@ -493,10 +413,10 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
      * @param value to find a previous value for.
      * @return index of previous key or -1 if not found.
      */
-    private int getIndexOfPreviousValue(NodoB<T> node, T value) {
+    private int getIndexOfPreviousValue(Node<T> node, T value) {
         for (int i = 1; i < node.numberOfKeys(); i++) {
-            Key<T> t = node.getKey(i);
-            if (t.getElemento().compareTo(value) >= 0) {
+            T t = node.getKey(i);
+            if (t.compareTo(value) >= 0) {
                 return i - 1;
             }
         }
@@ -510,10 +430,10 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
      * @param value to find a next value for.
      * @return index of next key or -1 if not found.
      */
-    private int getIndexOfNextValue(NodoB<T> node, T value) {
+    private int getIndexOfNextValue(Node<T> node, T value) {
         for (int i = 0; i < node.numberOfKeys(); i++) {
-            Key<T> t = node.getKey(i);
-            if (t.getElemento().compareTo(value) >= 0) {
+            T t = node.getKey(i);
+            if (t.compareTo(value) >= 0) {
                 return i;
             }
         }
@@ -543,20 +463,20 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
      * @param node to validate.
      * @return True if valid.
      */
-    private boolean validateNode(NodoB<T> node) {
+    private boolean validateNode(Node<T> node) {
         int keySize = node.numberOfKeys();
         if (keySize > 1) {
             // Make sure the keys are sorted
             for (int i = 1; i < keySize; i++) {
-                Key<T> p = node.getKey(i - 1);
-                Key<T> n = node.getKey(i);
-                if (p.getElemento().compareTo(n.getElemento()) > 0) {
+                T p = node.getKey(i - 1);
+                T n = node.getKey(i);
+                if (p.compareTo(n) > 0) {
                     return false;
                 }
             }
         }
         int childrenSize = node.numberOfChildren();
-        if (node.getParent() == null) {
+        if (node.parent == null) {
             // root
             if (keySize > maxKeySize) {
                 // check max key size. root does not have a min key size
@@ -589,33 +509,33 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
             }
         }
 
-        NodoB<T> first = node.getChild(0);
+        Node<T> first = node.getChild(0);
         // The first child's last key should be less than the node's first key
-        if (first.getKey(first.numberOfKeys() - 1).getElemento().compareTo(node.getKey(0).getElemento()) > 0) {
+        if (first.getKey(first.numberOfKeys() - 1).compareTo(node.getKey(0)) > 0) {
             return false;
         }
 
-        NodoB<T> last = node.getChild(node.numberOfChildren() - 1);
+        Node<T> last = node.getChild(node.numberOfChildren() - 1);
         // The last child's first key should be greater than the node's last key
-        if (last.getKey(0).getElemento().compareTo(node.getKey(node.numberOfKeys() - 1).getElemento()) < 0) {
+        if (last.getKey(0).compareTo(node.getKey(node.numberOfKeys() - 1)) < 0) {
             return false;
         }
 
         // Check that each node's first and last key holds it's invariance
         for (int i = 1; i < node.numberOfKeys(); i++) {
-            Key<T> p = node.getKey(i - 1);
-            Key<T> n = node.getKey(i);
-            NodoB<T> c = node.getChild(i);
-            if (p.getElemento().compareTo(c.getKey(0).getElemento()) > 0) {
+            T p = node.getKey(i - 1);
+            T n = node.getKey(i);
+            Node<T> c = node.getChild(i);
+            if (p.compareTo(c.getKey(0)) > 0) {
                 return false;
             }
-            if (n.getElemento().compareTo(c.getKey(c.numberOfKeys() - 1).getElemento()) < 0) {
+            if (n.compareTo(c.getKey(c.numberOfKeys() - 1)) < 0) {
                 return false;
             }
         }
 
-        for (int i = 0; i < node.getChildrenSize(); i++) {
-            NodoB<T> c = node.getChild(i);
+        for (int i = 0; i < node.childrenSize; i++) {
+            Node<T> c = node.getChild(i);
             boolean valid = this.validateNode(c);
             if (!valid) {
                 return false;
@@ -623,6 +543,42 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
         }
 
         return true;
+    }
+
+    public ArrayList<T> enlistarElementos() throws NoDatosException {
+        if (root == null) {
+            throw new NoDatosException("No se encontraron datos");
+        }
+        ArrayList<T> elementos = new ArrayList<>();
+        recorrerArbolElementos(root, elementos);
+        if (size() == 0) {
+            throw new NoDatosException("No se encontraron datos");
+        }
+        return elementos;
+    }
+
+    private boolean isShet(Node<T> n) {
+        return n.numberOfChildren() == 0;
+
+    }
+
+    private void recorrerArbolElementos(Node<T> node, ArrayList<T> elementos) {
+        int x = 0;
+
+        for (int i = 0; i < node.numberOfChildren(); i++) {
+            if (node.getChild(i) != null) {
+                recorrerArbolElementos(node.getChild(i), elementos);
+            }
+            if (x <= node.numberOfKeys() && node.getKey(x) != null) {
+                elementos.add(node.getKey(x++));
+            }
+        }
+        if (isShet(node)) {
+            for (int i = 0; i < node.numberOfKeys(); i++) {
+                elementos.add(node.getKey(i));
+            }
+        }
+
     }
 
     /**
@@ -633,100 +589,167 @@ public class ArbolB<T extends Comparable<T>> implements Arbol<T>, Serializable {
      */
     @Override
     public String toString() {
-        System.out.println("Size arbol: " + this.size);
-        return TreePrinter.getString(this);
-
+        try {
+            return enlistarElementos().toString();
+        } catch (NoDatosException ex) {
+        }
+        return "none";
     }
 
-    @Override
-    public NodoB<T> buscar(T elemento) throws ItemNotFoundException {
-        NodoB<T> nodo = getNode(elemento);
-        if (nodo == null) {
-            throw new ItemNotFoundException("Elemento no encontrado");
-        }
-        for (int i = 0; i < nodo.getKeysSize(); i++) {
-            if (nodo.getKey(i).getElemento().compareTo(elemento) == 0) {
-                nodo.setIndiceLlave(i);
-                return nodo;
-            }
-        }
-        throw new ItemNotFoundException("Elemento no encontrado");
-    }
+    private class Node<T extends Comparable<T>> implements Serializable {
 
-    public void recorrerArbolElementos(NodoB<T> node, ArrayList<T> elementos) {
-        int x = 0;
-        for (int i = 0; i < node.numberOfChildren(); i++) {
-            if (node.getChild(i) != null) {
-                recorrerArbolElementos(node.getChild(i), elementos);
-            }
-            if (x <= node.numberOfKeys() && node.getKey(x) != null) {
-                elementos.add(node.getKey(x++).getElemento());
-            }
-        }
-        if (isShet(node)) {
-            for (int i = 0; i < node.numberOfKeys(); i++) {
-                elementos.add(node.getKey(i).getElemento());
-            }
+        private T[] keys = null;
+        private int keysSize = 0;
+        private Node<T>[] children = null;
+        private int childrenSize = 0;
+        private Comparator<Node<T>> comparator = new Comparador();
+
+        protected Node<T> parent = null;
+
+        private Node(Node<T> parent, int maxKeySize, int maxChildrenSize) {
+            this.parent = parent;
+            this.keys = (T[]) new Comparable[maxKeySize + 1];
+            this.keysSize = 0;
+            this.children = new Node[maxChildrenSize + 1];
+            this.childrenSize = 0;
         }
 
-    }
-
-    @Override
-    public void inOrden() {
-        System.out.println("No hay inOrden");
-    }
-
-    @Override
-    public void preOrden() {
-        System.out.println("No hay preOrden");       
-    }
-
-    @Override
-    public void posOrden() {
-        System.out.println("No hay posOrden");               
-    }
-
-    @Override
-    public void setRaiz(T raiz) {
-        this.root = new NodoB<T>(null, maxKeySize, maxChildrenSize);
-        Key<T> key = new Key<>(raiz);
-        this.root.addKey(key); 
-    }
-
-    private static class TreePrinter {
-
-        public static <T extends Comparable<T>> String getString(ArbolB<T> tree) {
-            if (tree.root == null) {
-                return "Tree has no nodes.";
-            }
-            return getString(tree.root, "", true);
+        private T getKey(int index) {
+            return keys[index];
         }
 
-        private static <T extends Comparable<T>> String getString(NodoB<T> node, String prefix, boolean isTail) {
-            StringBuilder builder = new StringBuilder();
-
-            builder.append(prefix).append((isTail ? "└── " : "├── "));
-            for (int i = 0; i < node.numberOfKeys(); i++) {
-                Key value = node.getKey(i);
-                builder.append(value);
-                if (i < node.numberOfKeys() - 1) {
-                    builder.append(", ");
+        private int indexOf(T value) {
+            for (int i = 0; i < keysSize; i++) {
+                if (keys[i].equals(value)) {
+                    return i;
                 }
             }
-            builder.append("\n");
+            return -1;
+        }
 
-            if (node.getChildren() != null) {
-                for (int i = 0; i < node.numberOfChildren() - 1; i++) {
-                    NodoB<T> obj = node.getChild(i);
-                    builder.append(getString(obj, prefix + (isTail ? "    " : "│   "), false));
-                }
-                if (node.numberOfChildren() >= 1) {
-                    NodoB<T> obj = node.getChild(node.numberOfChildren() - 1);
-                    builder.append(getString(obj, prefix + (isTail ? "    " : "│   "), true));
+        private void addKey(T value) {
+            keys[keysSize++] = value;
+            Arrays.sort(keys, 0, keysSize);
+        }
+
+        private T removeKey(T value) {
+            T removed = null;
+            boolean found = false;
+            if (keysSize == 0) {
+                return null;
+            }
+            for (int i = 0; i < keysSize; i++) {
+                if (keys[i].equals(value)) {
+                    found = true;
+                    removed = keys[i];
+                } else if (found) {
+                    // shift the rest of the keys down
+                    keys[i - 1] = keys[i];
                 }
             }
-            
-            return builder.toString();
+            if (found) {
+                keysSize--;
+                keys[keysSize] = null;
+            }
+            return removed;
+        }
+
+        private T removeKey(int index) {
+            if (index >= keysSize) {
+                return null;
+            }
+            T value = keys[index];
+            for (int i = index + 1; i < keysSize; i++) {
+                // shift the rest of the keys down
+                keys[i - 1] = keys[i];
+            }
+            keysSize--;
+            keys[keysSize] = null;
+            return value;
+        }
+
+        private int numberOfKeys() {
+            return keysSize;
+        }
+
+        private Node<T> getChild(int index) {
+            if (index >= childrenSize) {
+                return null;
+            }
+            return children[index];
+        }
+
+        private int indexOf(Node<T> child) {
+            for (int i = 0; i < childrenSize; i++) {
+                if (children[i].equals(child)) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        private boolean addChild(Node<T> child) {
+            child.parent = this;
+            children[childrenSize++] = child;
+            Arrays.sort(children, 0, childrenSize, comparator);
+            return true;
+        }
+
+        private boolean removeChild(Node<T> child) {
+            boolean found = false;
+            if (childrenSize == 0) {
+                return found;
+            }
+            for (int i = 0; i < childrenSize; i++) {
+                if (children[i].equals(child)) {
+                    found = true;
+                } else if (found) {
+                    // shift the rest of the keys down
+                    children[i - 1] = children[i];
+                }
+            }
+            if (found) {
+                childrenSize--;
+                children[childrenSize] = null;
+            }
+            return found;
+        }
+
+        private Node<T> removeChild(int index) {
+            if (index >= childrenSize) {
+                return null;
+            }
+            Node<T> value = children[index];
+            children[index] = null;
+            for (int i = index + 1; i < childrenSize; i++) {
+                // shift the rest of the keys down
+                children[i - 1] = children[i];
+            }
+            childrenSize--;
+            children[childrenSize] = null;
+            return value;
+        }
+
+        private int numberOfChildren() {
+            return childrenSize;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+            return "Node";
+        }
+
+        private class Comparador implements Comparator<Node<T>>, Serializable {
+
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public int compare(Node<T> o1, Node<T> o2) {
+                return o1.getKey(0).compareTo(o2.getKey(0));
+            }
         }
     }
 

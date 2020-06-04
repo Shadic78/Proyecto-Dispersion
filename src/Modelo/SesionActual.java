@@ -6,7 +6,10 @@
 package Modelo;
 
 import ArbolB.ArbolB;
+import Excepciones.NoDatosException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,17 +27,22 @@ public class SesionActual {
     }
     
     public static void agregarContacto(Contacto c) {
-        arbol.insertar(c);
+        arbol.add(c);
         ArbolesUsuarios.guardarArbol(arbol, rutaArbolB, usuario.getCorreo());
     }
     
     public static ArrayList<Contacto> listarMisContactos() {
-        ArrayList<Contacto> misContactos = new ArrayList<>();
-        arbol.getElementos(misContactos);
-        System.out.println("Array de contactos: ");
-        System.out.println(misContactos);
-        System.out.println("\nTo string: ");
-        System.out.println(arbol.toString());
+        ArrayList<Contacto> misContactos = new ArrayList<>();        
+        try {
+            misContactos = arbol.enlistarElementos();
+            System.out.println("Array de contactos: ");
+            System.out.println(misContactos);
+            System.out.println("\nTo string: ");
+            System.out.println(arbol.toString());
+        } catch (NoDatosException ex) {
+            System.out.println("No datos exception listarMisContactos");
+            Logger.getLogger(SesionActual.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return misContactos;
     }
     

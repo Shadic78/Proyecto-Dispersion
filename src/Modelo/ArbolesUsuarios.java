@@ -6,7 +6,6 @@
 package Modelo;
 
 import ArbolB.ArbolB;
-import Interfaces.Arbol;
 import Main.Main;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

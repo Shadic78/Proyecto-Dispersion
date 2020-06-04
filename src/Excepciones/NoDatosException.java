@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Interfaces;
-
-import java.util.ArrayList;
+package Excepciones;
 
 /**
  *
  * @author Equipo1
  */
-public interface Nodo<T extends Comparable<T>> {
-    
+public class NoDatosException extends Exception {
+
+    public NoDatosException(String message) {
+        super(message);
+    }
+
 }

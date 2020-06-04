@@ -6,6 +6,7 @@
 package Modelo;
 
 import ArbolB.ArbolB;
+import Excepciones.NoDatosException;
 import Main.Main;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -103,19 +104,48 @@ public class UsuariosRegistrados {
     }
     
     private static void borrarContactoDeTodos(Contacto c) {
-        ArrayList<ArbolB<Contacto>> arboles = ArbolesUsuarios.getTodosLosArboles();
-        ArrayList<Contacto> usuarios = UsuariosRegistrados.getTodosLosUsuarios();
-        Hashtable<String, String> tablaArboles = ArbolesUsuarios.getTablaGuardada();
+        try {
+            //ArrayList<ArbolB<Contacto>> arboles = ArbolesUsuarios.getTodosLosArboles();
+            ArrayList<Contacto> usuarios = UsuariosRegistrados.getTodosLosUsuarios();
+            Hashtable<String, String> tablaArboles = ArbolesUsuarios.getTablaGuardada();
+
+            for (int i = 0; i < usuarios.size(); i++) {
+                Contacto usuario = usuarios.get(i);
+                ArbolB<Contacto> arbolUsuario = ArbolesUsuarios.cargarArbol(usuario);
+                ArrayList<Contacto> listaContactos = arbolUsuario.enlistarElementos();
+                String rutaGuardado = tablaArboles.get(usuario.getCorreo());
+                
+                Contacto aBorrar = UsuariosRegistrados.obtenerContacto(c, listaContactos);
+                if(aBorrar != null) {
+                    arbolUsuario.remove(aBorrar);
+                    ArbolesUsuarios.guardarArbol(arbolUsuario, rutaGuardado, usuario.getCorreo());
+                }
+            }
+            
+        } catch (NoDatosException ex) {
+            Logger.getLogger(UsuariosRegistrados.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        for(int i = 0; i < arboles.size(); i++) {
+        /*for(int i = 0; i < arboles.size(); i++) {
             Contacto contacto = usuarios.get(i);
             ArbolB<Contacto> arbol = arboles.get(i);
             String ruta = tablaArboles.get(contacto.getCorreo());
             
             arbol.remove(c);
             ArbolesUsuarios.guardarArbol(arbol, ruta, contacto.getCorreo());
-        }
+        }*/
         
+    }
+    
+    private static Contacto obtenerContacto(Contacto c, ArrayList<Contacto> lista) {
+        Contacto con = null;
+        for(int i = 0; i < lista.size(); i++) {
+            if(lista.get(i).getCorreo().equals(c.getCorreo())) {
+                con = lista.get(i);
+                break;
+            }
+        }
+        return con;
     }
     
 }

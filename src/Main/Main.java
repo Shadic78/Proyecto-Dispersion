@@ -6,7 +6,6 @@
 package Main;
 
 import ArbolB.ArbolB;
-import ArbolB.NodoB;
 import Controlador.ControlLogin;
 import Modelo.Contacto;
 import Vista.Login;
@@ -25,23 +24,27 @@ public class Main {
 
     public static void main(String[] args) {
         //generarTablas();
-        /*Login login = new Login();
+        Login login = new Login();
         ControlLogin controlLogin = new ControlLogin(login);        
-        login.setVisible(true);*/
+        login.setVisible(true);
         
-        ArbolB<Contacto> ar = new ArbolB<>(3);
+        /*ArbolB<Contacto> ar = new ArbolB<>();
         Contacto borrar = new Contacto("xd2", 16, "asd2@", "pas2");
-        ar.insertar(new Contacto("xd", 12, "asd@", "pas"));
-        ar.insertar(borrar);
-        ar.insertar(new Contacto("xd3", 13, "asd3@", "pas3"));
+        Contacto borrar2 = new Contacto("xd3", 13, "asd3@", "pas3");
+        ar.add(new Contacto("xd", 12, "asd@", "pas"));
+        ar.add(borrar);
+        ar.add(borrar2);
         System.out.println(ar);
         System.out.println("deleting xd2");
         ar.remove(borrar);
         System.out.println(ar);
         System.out.println("Insertando 4  -  5");
-        ar.insertar(new Contacto("xd4", 4, "asd4@", "pas4"));
-        ar.insertar(new Contacto("xd5", 5, "asd5@", "pas5"));
+        ar.add(new Contacto("xd4", 4, "asd4@", "pas4"));
+        ar.add(new Contacto("xd5", 5, "asd5@", "pas5"));
         System.out.println(ar);
+        System.out.println("quitando xd3");
+        ar.remove(borrar2);
+        System.out.println(ar);*/
     }
     
     public static void generarTablas() {
